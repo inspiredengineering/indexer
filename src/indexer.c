@@ -286,7 +286,10 @@ int main ( int argc, char *argv[] ) {
 					return(-1);
 				}
 				strcpy(filestr->filename,argv[i]);
-				filestr->lines = list_start((void*)linenum);
+				int *linenump;
+				linenump = (int*)malloc(sizeof(int));
+				*linenump = linenum;
+				filestr->lines = list_start((void*)linenump);
 				//record information about the word
 				word_str *wordstr;
 				wordstr = (word_str*)malloc(sizeof(word_str));
