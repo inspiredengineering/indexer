@@ -21,7 +21,7 @@
 					 *if needed
 					 */
 
-#define WORDDEL " \t~!@#$%^&*()_+`-={}|[]\\:\";'<>?,./" /*Delimiters*/
+#define WORDDEL " \r\n\t~!@#$%^&*()_+`-={}|[]\\:\";'<>?,./" /*Delimiters*/
 
 /*This is the base struct for linked lists*/
 typedef struct LinkedList {
