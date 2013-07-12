@@ -272,31 +272,37 @@ int main ( int argc, char *argv[] ) {
 					word[strlen(word)-1] = '\0';
 				}
 				//record information about the file
-				file_str filestr;
-				filestr.filename=(char*)malloc(sizeof(char)*strlen(argv[i]));
-				if(filestr.filename == NULL)
+				file_str *filestr;
+				filestr->filename=(char*)malloc(sizeof(char)*strlen(argv[i]));
+				if(filestr->filename == NULL)
 				{
 					printf("Could not allocate mem!");
 					return(-1);
 				}
-				strcpy(filestr.filename,argv[i]);
-				filestr.lines = list_start((void*)linenum);
+				strcpy(filestr->filename,argv[i]);
+				filestr->lines = list_start((void*)linenum);
 				//record information about the word
-				word_str wordstr;
-				wordstr.word = (char*)malloc(sizeof(char)*strlen(word));
-				if(wordstr.word == NULL)
+				word_str *wordstr;
+				wordstr = (word_str*)malloc(sizeof(word_str));
+				if(wordstr == NULL)
 				{
 					printf("Could not allocate mem!");
 					return(-1);
 				}
-				strcpy(wordstr.word,word);
+				wordstr->word = (char*)malloc(sizeof(char)*strlen(word));
+				if(wordstr->word == NULL)
+				{
+					printf("Could not allocate mem!");
+					return(-1);
+				}
+				strcpy(wordstr->word,word);
 				//create the linked list of files for the word
-				wordstr.files = list_start(&filestr);
+				wordstr->files = list_start(filestr);
 				//Add the word to the linkedlist, determine if the list is new
 				if(wlist==NULL)
-					wlist = list_start(&wordstr);
+					wlist = list_start(wordstr);
 				else
-					wlist = list_add(wlist,&wordstr);
+					wlist = list_add(wlist,wordstr);
 				//clear out the word
 				word = strtok(NULL, WORDDEL);
 			}
