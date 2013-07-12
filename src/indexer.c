@@ -354,7 +354,8 @@ int main ( int argc, char *argv[] ) {
 		return(-1);
 	}
 
-	linkedlist *wlist = NULL;
+	linkedlist *wlist;
+	wlist = NULL;
 	FILE *fp;
 	char *linebuf;
 	unsigned int buflen;
