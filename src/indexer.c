@@ -35,10 +35,10 @@ typedef struct WordStr {
 } word_str;
 
 //Data in a linkedlist for a file
-typedef struct FilesStr {
-	char *filename;
-	struct LinkedList *lines;
-}file_str;
+//typedef struct FilesStr {
+//	char *filename;
+//	struct LinkedList *lines;
+//}file_str;
 
 //Prototypes
 linkedlist* list_start(void *data);
@@ -110,7 +110,7 @@ int linecmp(linkedlist *list1, linkedlist *list2)
 //comparison function used to compare filenames can be passed to merge functions
 int filenmcmp(linkedlist *list1, linkedlist *list2)
 {
-	return(strcmp(((file_str *)list1->data)->filename,((file_str *)list2->data)->filename));
+	return(strcmp(((linkedlist *)list1->data)->data,((linkedlist *)list2->data)->data));
 }
 //comparison function used to compare words can be passed to merge functions
 int wordcmp(linkedlist *list1, linkedlist *list2)
@@ -141,7 +141,7 @@ linkedlist* mergesort(linkedlist *head,int (*comp)(linkedlist*,linkedlist*))
 void filemergepost(linkedlist *currlist)
 {
 	//sort the line numbers
-	((file_str*)currlist->data)->lines = mergesort(((file_str*)currlist->data)->lines,linecmp);
+	((linkedlist*)currlist->data)->nextelm = mergesort(((linkedlist*)currlist->data)->nextelm,linecmp);
 }
 //when merging word listings we need to perform some clean up on the file lists
 void wordmergepost(linkedlist *currlist)
@@ -185,11 +185,11 @@ void display(linkedlist *wlist)
 		printf("%s\n",((word_str*)wlist->data)->word);
 		while(((word_str*)wlist->data)->files)
 		{
-			printf("\t%s",((file_str*)((word_str*)wlist->data)->files->data)->filename);
-			while(((file_str*)((word_str*)wlist->data)->files->data)->lines)
+			printf("\t%s",((linkedlist*)((word_str*)wlist->data)->files->data)->data);
+			while(((linkedlist*)((word_str*)wlist->data)->files->data)->nextelm)
 			{
-				printf(" %d",(int)((file_str*)((word_str*)wlist->data)->files->data)->lines->data);
-				((file_str*)((word_str*)wlist->data)->files->data)->lines = ((file_str*)((word_str*)wlist->data)->files->data)->lines->nextelm;
+				printf(" %d",(int)((linkedlist*)((word_str*)wlist->data)->files->data)->nextelm->data);
+				((linkedlist*)((word_str*)wlist->data)->files->data)->nextelm = ((linkedlist*)((word_str*)wlist->data)->files->data)->nextelm->nextelm;
 			}
 			printf("\n");
 			((word_str*)wlist->data)->files = ((word_str*)wlist->data)->files->nextelm;
@@ -272,15 +272,23 @@ int main ( int argc, char *argv[] ) {
 					word[strlen(word)-1] = '\0';
 				}
 				//record information about the file
-				file_str *filestr;
-				filestr->filename=(char*)malloc(sizeof(char)*strlen(argv[i]));
-				if(filestr->filename == NULL)
+				linkedlist *filestr;
+				filestr->data=(void*)malloc(sizeof(char)*strlen(argv[i]));
+				if(filestr->data == NULL)
 				{
 					printf("Could not allocate mem!");
 					return(-1);
 				}
-				strcpy(filestr->filename,argv[i]);
-				filestr->lines = list_start((void*)linenum);
+				strcpy(filestr->data,argv[i]);
+				int *linenump;
+				linenump = (int*)malloc(sizeof(int));
+				if(linenump == NULL)
+				{
+					printf("Could not allocate mem!");
+					return(-1);
+				}
+				*linenump = linenum;
+				filestr->nextelm = list_start((void*)linenump);
 				//record information about the word
 				word_str *wordstr;
 				wordstr = (word_str*)malloc(sizeof(word_str));
