@@ -28,6 +28,10 @@ typedef struct LinkedList {
 	struct LinkedList *nextelm;
 } linkedlist;
 
+//These are really helper LinkedList types
+//They allow for better naming, but in reality can be called
+//and manipulated just like normal linked lists
+
 //Data in a linkedlist for a word
 typedef struct WordStr {
 	char *word;
@@ -105,7 +109,7 @@ linkedlist* merge(linkedlist *head_one, linkedlist *head_two, int (*comp)(linked
 //comparison function used to compare line numbers can be passed to merge functions
 int linecmp(linkedlist *list1, linkedlist *list2)
 {
-	return((int)list1->data-(int)list2->data);
+	return(*((int*)list1->data)-*((int*)list2->data));
 }
 //comparison function used to compare filenames can be passed to merge functions
 int filenmcmp(linkedlist *list1, linkedlist *list2)
@@ -188,7 +192,7 @@ void display(linkedlist *wlist)
 			printf("\t%s",((file_str*)((word_str*)wlist->data)->files->data)->filename);
 			while(((file_str*)((word_str*)wlist->data)->files->data)->lines)
 			{
-				printf(" %d",(int)((file_str*)((word_str*)wlist->data)->files->data)->lines->data);
+				printf(" %d",*((int*)((file_str*)((word_str*)wlist->data)->files->data)->lines->data));
 				((file_str*)((word_str*)wlist->data)->files->data)->lines = ((file_str*)((word_str*)wlist->data)->files->data)->lines->nextelm;
 			}
 			printf("\n");
@@ -273,12 +277,6 @@ int main ( int argc, char *argv[] ) {
 				}
 				//record information about the file
 				file_str *filestr;
-				filestr = (file_str*)malloc(sizeof(file_str));
-				if(filestr == NULL)
-				{
-					printf("Could not allocate mem!");
-					return(-1);
-				}
 				filestr->filename=(char*)malloc(sizeof(char)*strlen(argv[i]));
 				if(filestr->filename == NULL)
 				{
@@ -288,6 +286,17 @@ int main ( int argc, char *argv[] ) {
 				strcpy(filestr->filename,argv[i]);
 				int *linenump;
 				linenump = (int*)malloc(sizeof(int));
+				if(linenump == NULL)
+				{
+					printf("Could not allocate mem!");
+					return(-1);
+				}
+<<<<<<< HEAD
+				strcpy(filestr->filename,argv[i]);
+				int *linenump;
+				linenump = (int*)malloc(sizeof(int));
+=======
+>>>>>>> a6d1b150529c00ede57fb6471ccad3c766fe5bd6
 				*linenump = linenum;
 				filestr->lines = list_start((void*)linenump);
 				//record information about the word
