@@ -286,17 +286,6 @@ int main ( int argc, char *argv[] ) {
 				strcpy(filestr->filename,argv[i]);
 				int *linenump;
 				linenump = (int*)malloc(sizeof(int));
-				if(linenump == NULL)
-				{
-					printf("Could not allocate mem!");
-					return(-1);
-				}
-<<<<<<< HEAD
-				strcpy(filestr->filename,argv[i]);
-				int *linenump;
-				linenump = (int*)malloc(sizeof(int));
-=======
->>>>>>> a6d1b150529c00ede57fb6471ccad3c766fe5bd6
 				*linenump = linenum;
 				filestr->lines = list_start((void*)linenump);
 				//record information about the word
