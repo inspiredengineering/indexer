@@ -347,6 +347,15 @@ void display(linkedlist *wlist)
 /*Main function pass command line arg for each of the files to parse*/
 int main ( int argc, char *argv[] ) {
 	int i;
+	linkedlist *wlist;
+	file_str *filestr;
+	FILE *fp;
+	char *linebuf;
+	unsigned int buflen;
+	char *word;
+	word_str *wordstr;
+	int linenum;
+	int *linenump;
 
 	if(argc <= 1)
 	{
@@ -354,13 +363,7 @@ int main ( int argc, char *argv[] ) {
 		return(-1);
 	}
 
-	linkedlist *wlist;
-	wlist = NULL;
-	FILE *fp;
-	char *linebuf;
-	unsigned int buflen;
-	char *word;
-	int linenum;
+
 	/*iterate through the files*/
 	for(i=1;i<argc;i++)
 	{
@@ -428,7 +431,7 @@ int main ( int argc, char *argv[] ) {
 					word[strlen(word)-1] = '\0';
 				}
 				/*record information about the file*/
-				file_str *filestr;
+
 				filestr = (file_str*)malloc(sizeof(file_str));
 				if(filestr == NULL)
 				{
@@ -442,12 +445,10 @@ int main ( int argc, char *argv[] ) {
 					return(-1);
 				}
 				strcpy(filestr->filename,argv[i]);
-				int *linenump;
 				linenump = (int*)malloc(sizeof(int));
 				*linenump = linenum;
 				filestr->lines = list_start((void*)linenump);
 				/*record information about the word*/
-				word_str *wordstr;
 				wordstr = (word_str*)malloc(sizeof(word_str));
 				if(wordstr == NULL)
 				{
