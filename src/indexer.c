@@ -105,7 +105,7 @@ linkedlist* merge(linkedlist *head_one, linkedlist *head_two, int (*comp)(linked
 //comparison function used to compare line numbers can be passed to merge functions
 int linecmp(linkedlist *list1, linkedlist *list2)
 {
-	return((int)list1->data-(int)list2->data);
+	return(*((int*)list1->data)-*((int*)list2->data));
 }
 //comparison function used to compare filenames can be passed to merge functions
 int filenmcmp(linkedlist *list1, linkedlist *list2)
@@ -188,7 +188,7 @@ void display(linkedlist *wlist)
 			printf("\t%s",((file_str*)((word_str*)wlist->data)->files->data)->filename);
 			while(((file_str*)((word_str*)wlist->data)->files->data)->lines)
 			{
-				printf(" %d",(int)((file_str*)((word_str*)wlist->data)->files->data)->lines->data);
+				printf(" %d",((int*)((file_str*)((word_str*)wlist->data)->files->data)->lines->data));
 				((file_str*)((word_str*)wlist->data)->files->data)->lines = ((file_str*)((word_str*)wlist->data)->files->data)->lines->nextelm;
 			}
 			printf("\n");
@@ -286,7 +286,10 @@ int main ( int argc, char *argv[] ) {
 					return(-1);
 				}
 				strcpy(filestr->filename,argv[i]);
-				filestr->lines = list_start((void*)linenum);
+				int *linenump;
+				linenump = (int*)malloc(sizeof(int));
+				*linenump = linenum;
+				filestr->lines = list_start((void*)linenump);
 				//record information about the word
 				word_str *wordstr;
 				wordstr = (word_str*)malloc(sizeof(word_str));
