@@ -188,7 +188,7 @@ void display(linkedlist *wlist)
 			printf("\t%s",((file_str*)((word_str*)wlist->data)->files->data)->filename);
 			while(((file_str*)((word_str*)wlist->data)->files->data)->lines)
 			{
-				printf(" %d",((int*)((file_str*)((word_str*)wlist->data)->files->data)->lines->data));
+				printf(" %d",*((int*)((file_str*)((word_str*)wlist->data)->files->data)->lines->data));
 				((file_str*)((word_str*)wlist->data)->files->data)->lines = ((file_str*)((word_str*)wlist->data)->files->data)->lines->nextelm;
 			}
 			printf("\n");
