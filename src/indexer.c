@@ -347,7 +347,7 @@ void display(linkedlist *wlist)
 /*Main function pass command line arg for each of the files to parse*/
 int main ( int argc, char *argv[] ) {
 	int i;
-	linkedlist *wlist;
+	linkedlist *wlist = NULL;
 	file_str *filestr;
 	FILE *fp;
 	char *linebuf;
